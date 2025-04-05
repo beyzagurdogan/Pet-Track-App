@@ -13,7 +13,7 @@ struct HomeView: View {
                     .padding(.bottom, 20)
 
                 // Enter Pet Info Button
-                NavigationLink(destination: PetEntryView()) {
+                NavigationLink(destination: PetInputFormView()) {
                     Text("Enter Pet Info")
                         .font(.title2)
                         .fontWeight(.bold)
