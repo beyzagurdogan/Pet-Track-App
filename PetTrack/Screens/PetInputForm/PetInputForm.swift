@@ -1,202 +1,158 @@
 import SwiftUI
 
 struct PetInputFormView: View {
-    @State private var name = ""
-    @State private var age = ""
-    @State private var breed = ""
     @State private var type = "Dog"
+    @State private var name = ""
+    @State private var breed = ""
     @State private var weight = ""
-    @State private var activityLevel = "Medium"
-    @State private var dailyExerciseMinutes = ""
-    @State private var foodType = ""
-    @State private var dailyCalories = ""
-    @State private var lastVetVisit = Date()
-    @State private var healthConditions = ""
-    @State private var vaccinated = true
-    @State private var avgDailySteps = ""
-    @State private var recommendation = ""
+
+    let dogBreeds = ["Golden Retriever", "Labrador", "Poodle", "Bulldog", "Beagle"]
+    let catBreeds = ["Siamese", "Persian", "Sphynx", "Maine Coon", "Bengal"]
+
+    var breedOptions: [String] {
+        type == "Dog" ? dogBreeds : catBreeds
+    }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
+        NavigationView {
+            VStack(spacing: 28) {
                 
-                
-                
-                // Cat and Dog image buttons
-                HStack(spacing: 40) {
-                    Button(action: {
+                // Başlık
+                Text("Tell us about your pet 🐾")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                // Pet tipi seçimi
+                HStack(spacing: 20) {
+                    PetTypeCard(image: "cat", title: "Cat", isSelected: type == "Cat", color: .pink) {
                         type = "Cat"
-                    }) {
-                        VStack {
-                            Image("cat") // Add a relevant cat image to your assets
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 120, height: 120)
-                                .cornerRadius(10)
-                            Text("Cat")
-                                .fontWeight(.bold)
-                                .foregroundColor(type == "Cat" ? .blue : .black)
-                        }
+                        breed = ""
                     }
-                    .buttonStyle(PlainButtonStyle()) // To prevent default button styling
-
-                    Button(action: {
+                    PetTypeCard(image: "dog", title: "Dog", isSelected: type == "Dog", color: .blue) {
                         type = "Dog"
-                    }) {
-                        VStack {
-                            Image("dog") // Add a relevant dog image to your assets
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 120, height: 120)
-                                .cornerRadius(10)
-                            Text("Dog")
-                                .fontWeight(.bold)
-                                .foregroundColor(type == "Dog" ? .blue : .black)
+                        breed = ""
+                    }
+                }
+
+                // Pet İsmi
+                StyledTextField(title: "Pet Name", placeholder: "e.g. Bella", text: $name)
+
+                // Irk Seçimi
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("\(type) Breed")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                    Menu {
+                        ForEach(breedOptions, id: \.self) { breedOption in
+                            Button(action: {
+                                breed = breedOption
+                            }) {
+                                Text(breedOption)
+                            }
                         }
+                    } label: {
+                        HStack {
+                            Text(breed.isEmpty ? "Select Breed" : breed)
+                                .foregroundColor(breed.isEmpty ? .gray : .primary)
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                        )
                     }
-                    .buttonStyle(PlainButtonStyle()) // To prevent default button styling
-                }
-                .padding()
-
-               
-
-                // Name, Age, Breed & Type Input
-                VStack(spacing: 15) {
-                    TextField("Enter Pet's Name", text: $name)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    TextField("Enter Pet's Age", text: $age)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    TextField("Enter Pet's Breed", text: $breed)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
                 }
 
-                // Activity Level and Daily Exercise Input
-                VStack(spacing: 15) {
-                    Picker("Activity Level", selection: $activityLevel) {
-                        Text("Low").tag("Low")
-                        Text("Medium").tag("Medium")
-                        Text("High").tag("High")
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding()
+                // Kilo Girişi
+                StyledTextField(title: "Weight (kg)", placeholder: "e.g. 5.4", text: $weight, keyboardType: .decimalPad)
 
-                    TextField("Enter Daily Exercise Minutes", text: $dailyExerciseMinutes)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                }
+                Spacer()
 
-                // Nutrition Section
-                VStack(spacing: 15) {
-                    TextField("Enter Food Type", text: $foodType)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    TextField("Enter Daily Calories", text: $dailyCalories)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                }
-
-                // Health Information Section
-                VStack(spacing: 15) {
-                    DatePicker("Last Vet Visit", selection: $lastVetVisit, displayedComponents: .date)
-                        .padding()
-                    TextField("Health Conditions", text: $healthConditions)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    Toggle("Vaccinated", isOn: $vaccinated)
-                        .padding()
-                }
-
-                // Display Graphical Representation (Optional)
-                GraphicalRepresentationView()
-
-                // Submit Button
-                Button(action: {
-                    generateRecommendation()
-                }) {
-                    Text("Show AI Recommendation")
-                        .foregroundColor(.white)
-                        .font(.title2)
-                        .frame(width: 350, height: 55)
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                        .padding()
-                }
-
-                // Recommendation Result
-                if !recommendation.isEmpty {
-                    VStack {
-                        Text("AI Recommendation")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.green)
-                        Text(recommendation)
-                            .font(.body)
-                            .foregroundColor(.black)
+                // Devam Butonu
+                NavigationLink(
+                    destination: PetActivityHealthView(activityLevel: .constant("Medium"), dailyExerciseMinutes: .constant("30"), vaccinated: .constant(true)), // 2. sayfa
+                    label: {
+                        Text("Continue")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.green.opacity(0.1))
-                            .cornerRadius(10)
+                            .background(LinearGradient(colors: [Color.teal, Color.blue], startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(14)
+                            .shadow(color: .blue.opacity(0.3), radius: 6, x: 0, y: 4)
                     }
-                    .padding()
-                }
+                )
+                .padding(.bottom)
             }
             .padding()
-        }
-        .navigationTitle("")
-    }
-
-    // Recommendation logic
-    func generateRecommendation() {
-        if healthConditions.lowercased().contains("obesity") {
-            recommendation = "Recommended: Special weight management diet."
-        } else if activityLevel == "Low" {
-            recommendation = "Increase activity level with play and walks."
-        } else if healthConditions.lowercased().contains("dental") {
-            recommendation = "Use dental-friendly snacks and foods."
-        } else {
-            recommendation = "Maintain current routine and lifestyle."
+            .background(Color(.systemGroupedBackground))
+            .navigationBarHidden(true)
         }
     }
 }
 
-struct GraphicalRepresentationView: View {
+// Görsel kartlar
+struct PetTypeCard: View {
+    let image: String
+    let title: String
+    let isSelected: Bool
+    let color: Color
+    let action: () -> Void
+
     var body: some View {
-        VStack {
-            Text("Pet Activity Graph")
-                .font(.title2)
-                .padding()
-
-            // Example of a bar chart using SwiftUI's shapes (you can use a library like SwiftUICharts for more advanced charts)
-            HStack {
-                Rectangle()
-                    .fill(Color.blue)
-                    .frame(width: 50, height: 200)
-                Rectangle()
-                    .fill(Color.green)
-                    .frame(width: 50, height: 150)
-                Rectangle()
-                    .fill(Color.red)
-                    .frame(width: 50, height: 100)
-                Rectangle()
-                    .fill(Color.orange)
-                    .frame(width: 50, height: 180)
+        Button(action: action) {
+            VStack(spacing: 12) {
+                Image(image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80, height: 80)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(isSelected ? color : .primary)
             }
-            .padding(.bottom, 30)
+            .padding()
+            .frame(width: 130, height: 160)
+            .background(isSelected ? color.opacity(0.15) : Color(.systemGray6))
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(isSelected ? color : .clear, lineWidth: 2)
+            )
+            .shadow(color: isSelected ? color.opacity(0.3) : .clear, radius: 4, x: 0, y: 2)
         }
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(10)
-        .padding()
     }
 }
 
-struct PetInputFormView_Previews: PreviewProvider {
-    static var previews: some View {
-        PetInputFormView()
+// Giriş alanları için yeniden kullanılabilir stil
+struct StyledTextField: View {
+    var title: String
+    var placeholder: String
+    @Binding var text: String
+    var keyboardType: UIKeyboardType = .default
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.gray)
+            TextField(placeholder, text: $text)
+                .keyboardType(keyboardType)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
+        }
     }
 }
 
