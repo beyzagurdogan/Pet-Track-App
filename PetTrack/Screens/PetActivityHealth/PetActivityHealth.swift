@@ -5,6 +5,14 @@ struct PetActivityHealthView: View {
     @Binding var dailyExerciseMinutes: String
     @Binding var vaccinated: Bool
 
+    // 3. sayfa için gerekli veriler (local state)
+    @State private var feedingType = ""
+    @State private var mealsPerDay = ""
+    @State private var favoriteFood = ""
+    @State private var toiletHabit = ""
+    @State private var sleepPattern = ""
+    @State private var additionalNotes = ""
+
     var body: some View {
         VStack(spacing: 28) {
             // Başlık
@@ -40,10 +48,15 @@ struct PetActivityHealthView: View {
                 }
             }
 
-            // Günlük Egzersiz Süresi
-            StyledTextField(title: "Daily Exercise (minutes)", placeholder: "e.g. 30", text: $dailyExerciseMinutes, keyboardType: .numberPad)
+            // Egzersiz Süresi
+            StyledTextField(
+                title: "Daily Exercise (minutes)",
+                placeholder: "e.g. 30",
+                text: $dailyExerciseMinutes,
+                keyboardType: .numberPad
+            )
 
-            // Aşı Durumu
+            // Aşı durumu
             VStack(alignment: .leading, spacing: 8) {
                 Toggle(isOn: $vaccinated) {
                     Text("Vaccinated")
@@ -55,10 +68,17 @@ struct PetActivityHealthView: View {
 
             Spacer()
 
-            // Devam Butonu
-            Button(action: {
-                // Sonraki sayfaya geçiş ya da formu kaydet
-            }) {
+            // Devam butonu
+            NavigationLink(
+                destination: PetNutritionHabitsView(
+                    feedingType: $feedingType,
+                    mealsPerDay: $mealsPerDay,
+                    favoriteFood: $favoriteFood,
+                    toiletHabit: $toiletHabit,
+                    sleepPattern: $sleepPattern,
+                    additionalNotes: $additionalNotes
+                )
+            ) {
                 Text("Continue")
                     .font(.headline)
                     .foregroundColor(.white)
