@@ -71,6 +71,9 @@ struct PetActivityHealthView: View {
             // Devam butonu
             NavigationLink(
                 destination: PetNutritionHabitsView(
+                    activityLevel: $activityLevel,
+                    dailyExerciseMinutes: $dailyExerciseMinutes,
+                    vaccinated: $vaccinated,
                     feedingType: $feedingType,
                     mealsPerDay: $mealsPerDay,
                     favoriteFood: $favoriteFood,
@@ -78,6 +81,8 @@ struct PetActivityHealthView: View {
                     sleepPattern: $sleepPattern,
                     additionalNotes: $additionalNotes
                 )
+            
+
             ) {
                 Text("Continue")
                     .font(.headline)

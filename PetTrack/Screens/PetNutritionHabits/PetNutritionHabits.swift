@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct PetNutritionHabitsView: View {
+    @Binding var activityLevel: String
+    @Binding var dailyExerciseMinutes: String
+    @Binding var vaccinated: Bool
+
     @Binding var feedingType: String
     @Binding var mealsPerDay: String
     @Binding var favoriteFood: String
@@ -56,7 +60,7 @@ struct PetNutritionHabitsView: View {
                 // Öğün Sayısı
                 StyledTextField(title: "Meals Per Day", placeholder: "e.g. 2", text: $mealsPerDay, keyboardType: .numberPad)
 
-                // Favori Mama veya Ödül
+                // Favori Mama
                 StyledTextField(title: "Favorite Food (Optional)", placeholder: "e.g. Royal Canin", text: $favoriteFood)
 
                 // Tuvalet Alışkanlığı
@@ -110,10 +114,20 @@ struct PetNutritionHabitsView: View {
                         )
                 }
 
-                // Devam Butonu
-                Button(action: {
-                    // Formu tamamla
-                }) {
+                // Devam Butonu → Özet Sayfasına Git
+                NavigationLink(
+                    destination: PetSummaryView(
+                        activityLevel: activityLevel,
+                        dailyExerciseMinutes: dailyExerciseMinutes,
+                        vaccinated: vaccinated,
+                        feedingType: feedingType,
+                        mealsPerDay: mealsPerDay,
+                        favoriteFood: favoriteFood,
+                        toiletHabit: toiletHabit,
+                        sleepPattern: sleepPattern,
+                        additionalNotes: additionalNotes
+                    )
+                ) {
                     Text("Continue")
                         .font(.headline)
                         .foregroundColor(.white)
