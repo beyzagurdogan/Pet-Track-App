@@ -5,9 +5,14 @@ struct PetInputFormView: View {
     @State private var name = ""
     @State private var breed = ""
     @State private var weight = ""
+    func savePet() {
+        let pet = Pet(type: type, name: name, breed: breed, weight: weight)
+        PetStorage.shared.save(pet)
+    }
 
     let dogBreeds = ["Golden Retriever", "Labrador", "Poodle", "Bulldog", "Beagle"]
     let catBreeds = ["Siamese", "Persian", "Sphynx", "Maine Coon", "Bengal"]
+    
 
     var breedOptions: [String] {
         type == "Dog" ? dogBreeds : catBreeds
@@ -88,6 +93,9 @@ struct PetInputFormView: View {
                             .shadow(color: .blue.opacity(0.3), radius: 6, x: 0, y: 4)
                     }
                 )
+                .simultaneousGesture(TapGesture() .onEnded {
+                    savePet()
+                })
                 .padding(.bottom)
             }
             .padding()
