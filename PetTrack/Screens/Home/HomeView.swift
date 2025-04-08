@@ -2,16 +2,18 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var pets: [Pet] = []
-
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 30) {
+                Spacer(minLength: 50) // Bu satır ile içerik biraz daha aşağıya kayacak
+
                 Text("🐾 Pet Tracker 🐾")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color(hex: "#F8F8F2"))
                     .padding(.top)
-
+                
                 if pets.isEmpty {
                     VStack(spacing: 20) {
                         Text("No pets added yet.")
@@ -41,16 +43,16 @@ struct HomeView: View {
                                         .frame(width: 100, height: 100)
                                         .clipShape(Circle())
                                         .shadow(radius: 5)
-
+                                    
                                     Text(pet.name)
                                         .font(.title3)
                                         .fontWeight(.bold)
                                         .foregroundColor(.white)
-
+                                    
                                     Text("Breed: \(pet.breed)")
                                         .foregroundColor(.gray)
                                         .font(.subheadline)
-
+                                    
                                     Text("Weight: \(pet.weight) kg")
                                         .foregroundColor(.gray)
                                         .font(.subheadline)
@@ -59,11 +61,14 @@ struct HomeView: View {
                                 .background(Color(.systemGray5))
                                 .cornerRadius(16)
                                 .frame(width: 220)
+                                .onLongPressGesture {
+                                    deletePet(pet: pet) // Uzun basma ile silme işlemi
+                                }
                             }
                         }
                         .padding(.horizontal)
                     }
-
+                    
                     // Yeni Evcil Hayvan Ekleme Butonu
                     NavigationLink(destination: PetInputFormView()) {
                         Text("Add Another Pet")
@@ -77,7 +82,7 @@ struct HomeView: View {
                     }
                     .padding(.top)
                 }
-
+                
                 Spacer()
             }
             .padding()
@@ -89,5 +94,13 @@ struct HomeView: View {
             .navigationBarHidden(true)
         }
     }
+    
+    // Hayvan silme fonksiyonu
+    private func deletePet(pet: Pet) {
+        // `pets` dizisinden ilgili hayvanı sil
+        if let index = pets.firstIndex(where: { $0.id == pet.id }) {
+            pets.remove(at: index)
+            PetStorage.shared.delete(pet: pet) // Pet'i sil ve güncellenmiş veriyi kaydet
+        }
+    }
 }
-
