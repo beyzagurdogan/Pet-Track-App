@@ -6,7 +6,7 @@ struct PetActivityHealthView: View {
     @Binding var dailyExerciseMinutes: String
     @Binding var vaccinated: Bool
 
-    // 3. sayfa için gerekli veriler (local state)
+    // Bu sayfada toplanacak yeni bilgiler
     @State private var feedingType = ""
     @State private var mealsPerDay = ""
     @State private var favoriteFood = ""
@@ -22,7 +22,7 @@ struct PetActivityHealthView: View {
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Aktivite Düzeyi
+            // Aktivite Seviyesi
             VStack(alignment: .leading, spacing: 8) {
                 Text("Activity Level")
                     .font(.headline)
@@ -69,7 +69,7 @@ struct PetActivityHealthView: View {
 
             Spacer()
 
-            // Devam butonu
+            // Devam Butonu
             NavigationLink(
                 destination: PetNutritionHabitsView(
                     path: $path,
@@ -83,8 +83,6 @@ struct PetActivityHealthView: View {
                     sleepPattern: $sleepPattern,
                     additionalNotes: $additionalNotes
                 )
-            
-
             ) {
                 Text("Continue")
                     .font(.headline)
@@ -98,7 +96,7 @@ struct PetActivityHealthView: View {
         }
         .padding()
         .background(Color(.systemGroupedBackground))
-        .navigationBarHidden(true)
+    
     }
 }
 

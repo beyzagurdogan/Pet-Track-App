@@ -144,7 +144,7 @@ struct PetNutritionHabitsView: View {
             .padding()
         }
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
-        .navigationBarHidden(true)
+        
     }
 }
 

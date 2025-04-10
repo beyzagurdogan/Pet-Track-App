@@ -81,11 +81,14 @@ struct PetSummaryView: View {
                         .cornerRadius(12)
                 }
 
-                NavigationLink(
-                    destination: HomeView(
-                        path: $path
-                    )) // Formu Tamamla Butonu
-                {
+                // ✅ Finish Butonu
+                Button(action: {
+                    // (1) Navigation stack'i sıfırla
+                    path.removeLast(path.count)
+                    
+                    // (2) Ana sayfaya yönlendir
+                    path.append("Home")
+                }) {
                     Text("Finish")
                         .font(.headline)
                         .foregroundColor(.white)
@@ -94,15 +97,12 @@ struct PetSummaryView: View {
                         .background(LinearGradient(colors: [Color.teal, Color.blue], startPoint: .leading, endPoint: .trailing))
                         .cornerRadius(16)
                         .shadow(color: .blue.opacity(0.3), radius: 6, x: 0, y: 4)
-                            
-                        }
-                    
-                
+                }
             }
             .padding()
         }
         .background(Color(.systemGroupedBackground))
-        .navigationBarHidden(true)
+        
     }
 }
 
