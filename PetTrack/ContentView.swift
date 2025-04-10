@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var path = NavigationPath() // 🔧 Bunu ekledik
     var body: some View {
-        NavigationView {
-            HomeView() // Ana ekranı başlangıç olarak ayarla
+        NavigationStack(path: $path) {
+            HomeView(path: $path) // Ana ekranı başlangıç olarak ayarla
         }
         .navigationViewStyle(StackNavigationViewStyle()) // iPad uyumluluğu için
     }

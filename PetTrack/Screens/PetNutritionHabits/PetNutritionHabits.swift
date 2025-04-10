@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PetNutritionHabitsView: View {
+    @Binding var path: NavigationPath
     @Binding var activityLevel: String
     @Binding var dailyExerciseMinutes: String
     @Binding var vaccinated: Bool
@@ -117,6 +118,7 @@ struct PetNutritionHabitsView: View {
                 // Devam Butonu → Özet Sayfasına Git
                 NavigationLink(
                     destination: PetSummaryView(
+                        path: $path,
                         activityLevel: activityLevel,
                         dailyExerciseMinutes: dailyExerciseMinutes,
                         vaccinated: vaccinated,

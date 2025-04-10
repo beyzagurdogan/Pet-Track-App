@@ -19,6 +19,7 @@ class PetStorage {
         currentPets.append(pet)
         if let data = try? JSONEncoder().encode(currentPets) {
             UserDefaults.standard.set(data, forKey: key)
+            print(pet)
         }
     }
 

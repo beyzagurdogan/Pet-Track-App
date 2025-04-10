@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PetInputFormView: View {
+    @Binding var path: NavigationPath
     @State private var type = "Dog"
     @State private var name = ""
     @State private var breed = ""
@@ -19,7 +20,6 @@ struct PetInputFormView: View {
     }
 
     var body: some View {
-        NavigationView {
             VStack(spacing: 28) {
                 
                 // Başlık
@@ -81,7 +81,14 @@ struct PetInputFormView: View {
 
                 // Devam Butonu
                 NavigationLink(
-                    destination: PetActivityHealthView(activityLevel: .constant("Medium"), dailyExerciseMinutes: .constant("30"), vaccinated: .constant(true)), // 2. sayfa
+                    destination: {
+                        PetActivityHealthView(
+                            path: $path,
+                            activityLevel: .constant("Medium"),
+                            dailyExerciseMinutes: .constant("30"),
+                            vaccinated: .constant(true)
+                        )
+                    },// 2. sayfa
                     label: {
                         Text("Continue")
                             .font(.headline)
@@ -103,7 +110,6 @@ struct PetInputFormView: View {
             .navigationBarHidden(true)
         }
     }
-}
 
 // Görsel kartlar
 struct PetTypeCard: View {

@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Binding var path: NavigationPath
     @State private var pets: [Pet] = []
     
     var body: some View {
-        NavigationView {
             VStack(spacing: 30) {
                 Spacer(minLength: 50) // Bu satır ile içerik biraz daha aşağıya kayacak
 
@@ -20,7 +20,7 @@ struct HomeView: View {
                             .foregroundColor(.white)
                             .font(.title3)
                         
-                        NavigationLink(destination: PetInputFormView()) {
+                        NavigationLink(destination: PetInputFormView(path: $path)) {
                             Text("Add Your First Pet")
                                 .fontWeight(.semibold)
                                 .padding()
@@ -70,7 +70,7 @@ struct HomeView: View {
                     }
                     
                     // Yeni Evcil Hayvan Ekleme Butonu
-                    NavigationLink(destination: PetInputFormView()) {
+                    NavigationLink(destination: PetInputFormView(path: $path)) {
                         Text("Add Another Pet")
                             .fontWeight(.semibold)
                             .padding()
@@ -90,10 +90,8 @@ struct HomeView: View {
             .edgesIgnoringSafeArea(.all)
             .onAppear {
                 pets = PetStorage.shared.load()
-            }
-            .navigationBarHidden(true)
-        }
-    }
+            }        }
+
     
     // Hayvan silme fonksiyonu
     private func deletePet(pet: Pet) {

@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct PetSummaryView: View {
+    @Binding var path: NavigationPath
+    
     let activityLevel: String
     let dailyExerciseMinutes: String
     let vaccinated: Bool
@@ -79,10 +81,11 @@ struct PetSummaryView: View {
                         .cornerRadius(12)
                 }
 
-                // Formu Tamamla Butonu
-                Button(action: {
-                    // Geri anasayfaya veya başka bir aksiyon
-                }) {
+                NavigationLink(
+                    destination: HomeView(
+                        path: $path
+                    )) // Formu Tamamla Butonu
+                {
                     Text("Finish")
                         .font(.headline)
                         .foregroundColor(.white)
@@ -91,7 +94,10 @@ struct PetSummaryView: View {
                         .background(LinearGradient(colors: [Color.teal, Color.blue], startPoint: .leading, endPoint: .trailing))
                         .cornerRadius(16)
                         .shadow(color: .blue.opacity(0.3), radius: 6, x: 0, y: 4)
-                }
+                            
+                        }
+                    
+                
             }
             .padding()
         }
