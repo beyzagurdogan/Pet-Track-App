@@ -6,6 +6,11 @@ struct PetInputFormView: View {
     @State private var name = ""
     @State private var breed = ""
     @State private var weight = ""
+    
+    @State private var activityLevel = "Medium"
+    @State private var dailyExerciseMinutes = "30"
+    @State private var vaccinated = true
+
     func savePet() {
         let pet = Pet(type: type, name: name, breed: breed, weight: weight)
         PetStorage.shared.save(pet)
@@ -84,9 +89,9 @@ struct PetInputFormView: View {
                     destination: {
                         PetActivityHealthView(
                             path: $path,
-                            activityLevel: .constant("Medium"),
-                            dailyExerciseMinutes: .constant("30"),
-                            vaccinated: .constant(true)
+                            activityLevel: $activityLevel,
+                            dailyExerciseMinutes: $dailyExerciseMinutes,
+                            vaccinated: $vaccinated
                         )
                     },// 2. sayfa
                     label: {

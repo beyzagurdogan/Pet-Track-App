@@ -64,41 +64,9 @@ struct PetNutritionHabitsView: View {
                 // Favori Mama
                 StyledTextField(title: "Favorite Food (Optional)", placeholder: "e.g. Royal Canin", text: $favoriteFood)
 
-                // Tuvalet Alışkanlığı
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Toilet Habit")
-                        .font(.headline)
-                        .foregroundColor(.gray)
+           
 
-                    Menu {
-                        ForEach(toiletOptions, id: \.self) { option in
-                            Button {
-                                toiletHabit = option
-                            } label: {
-                                Text(option)
-                            }
-                        }
-                    } label: {
-                        HStack {
-                            Text(toiletHabit.isEmpty ? "Select Habit" : toiletHabit)
-                                .foregroundColor(toiletHabit.isEmpty ? .gray : .primary)
-                            Spacer()
-                            Image(systemName: "chevron.down")
-                                .foregroundColor(.gray)
-                        }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                        )
-                    }
-                }
-
-                // Uyku Düzeni
-                StyledTextField(title: "Sleep Pattern", placeholder: "e.g. 22:00 - 07:00", text: $sleepPattern)
-
+              
                 // Notlar
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Notes (Optional)")
