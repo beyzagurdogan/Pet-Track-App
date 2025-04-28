@@ -5,6 +5,7 @@ struct PetActivityHealthView: View {
     @Binding var activityLevel: String
     @Binding var dailyExerciseMinutes: String
     @Binding var vaccinated: Bool
+    @Binding var weight: String
 
     // Bu sayfada toplanacak yeni bilgiler
     @State private var feedingType = ""
@@ -81,7 +82,8 @@ struct PetActivityHealthView: View {
                     favoriteFood: $favoriteFood,
                     toiletHabit: $toiletHabit,
                     sleepPattern: $sleepPattern,
-                    additionalNotes: $additionalNotes
+                    additionalNotes: $additionalNotes,
+                    weight: $weight
                 )
             ) {
                 Text("Continue")

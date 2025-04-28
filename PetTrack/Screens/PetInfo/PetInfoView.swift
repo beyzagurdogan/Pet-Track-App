@@ -96,6 +96,8 @@ struct PetInfoView: View {
         let output = try? petHealthPredicter?.prediction(age: age, weight: weight)
         return output?.health_score ?? 0
     }
+    
+    
 }
 
 struct PetInfoView_Previews: PreviewProvider {

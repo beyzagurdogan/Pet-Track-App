@@ -12,7 +12,15 @@ struct PetInputFormView: View {
     @State private var vaccinated = true
 
     func savePet() {
-        let pet = Pet(type: type, name: name, breed: breed, weight: weight)
+        let weightValue: Double
+            if let weightDouble = Double(weight) {
+                weightValue = weightDouble
+            } else {
+                weightValue = 0.0 // Eğer kullanıcı geçerli bir sayı girmezse 0.0 kullanılır
+                print("⚠️ Uyarı: Pet ağırlığı eksik ya da sıfır! Varsayılan değer kullanılacak.")
+            }
+        
+        let pet = Pet(type: type, name: name, breed: breed, weight: weightValue, activityLevel: activityLevel, dailyExerciseMinutes: dailyExerciseMinutes, vaccinated: vaccinated)
         PetStorage.shared.save(pet)
     }
 
@@ -91,7 +99,8 @@ struct PetInputFormView: View {
                             path: $path,
                             activityLevel: $activityLevel,
                             dailyExerciseMinutes: $dailyExerciseMinutes,
-                            vaccinated: $vaccinated
+                            vaccinated: $vaccinated,
+                            weight: $weight
                         )
                     },// 2. sayfa
                     label: {

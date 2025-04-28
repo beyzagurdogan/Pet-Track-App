@@ -6,7 +6,12 @@ struct Pet: Codable, Identifiable {
     var type: String
     var name: String
     var breed: String
-    var weight: String
+    var weight: Double
+    
+    var activityLevel: String
+    var dailyExerciseMinutes: String
+    var vaccinated: Bool
+  
 }
 
 class PetStorage {

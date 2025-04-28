@@ -3,34 +3,21 @@ import SwiftUI
 struct PetSummaryView: View {
     @Binding var path: NavigationPath
     
-    let activityLevel: String
-    let dailyExerciseMinutes: String
-    let vaccinated: Bool
-    let feedingType: String
-    let mealsPerDay: String
-    let favoriteFood: String
-    let toiletHabit: String
-    let sleepPattern: String
-    let additionalNotes: String
-
-    var healthScore: Double {
-        var score = 50.0
-        if vaccinated { score += 20 }
-        if let exercise = Double(dailyExerciseMinutes), exercise >= 30 { score += 15 }
-        if feedingType != "" { score += 10 }
-        if sleepPattern != "" { score += 5 }
-        return min(score, 100)
-    }
-
-    var suggestion: String {
-        if !vaccinated {
-            return "Pet is not vaccinated. Please consult a vet to ensure full protection."
-        } else if let exercise = Double(dailyExerciseMinutes), exercise < 20 {
-            return "Try to increase daily exercise to improve health."
-        } else {
-            return "Great job! Your pet seems healthy overall. Keep up the good care."
-        }
-    }
+    @Binding var activityLevel: String
+    @Binding var dailyExerciseMinutes: String
+    @Binding var vaccinated: Bool
+    @Binding var feedingType: String
+    @Binding var mealsPerDay: String
+    @Binding var favoriteFood: String
+    @Binding var toiletHabit: String
+    @Binding var sleepPattern: String
+    @Binding var additionalNotes: String
+    @Binding var weight: String
+    
+    @State private var name = ""
+    @State private var breed = ""
+    @State private var calculatedHealthScore: Double = 50.0
+    @State private var aiSuggestion: String = ""  // AI önerisini buraya alacağız
 
     var body: some View {
         ScrollView {
@@ -53,15 +40,15 @@ struct PetSummaryView: View {
                             .foregroundColor(.blue)
 
                         Circle()
-                            .trim(from: 0.0, to: CGFloat(healthScore / 100))
+                            .trim(from: 0.0, to: CGFloat(calculatedHealthScore / 100))
                             .stroke(
                                 AngularGradient(gradient: Gradient(colors: [.green, .yellow, .red]), center: .center),
                                 style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round)
                             )
                             .rotationEffect(.degrees(-90))
-                            .animation(.easeOut(duration: 1.0), value: healthScore)
+                            .animation(.easeOut(duration: 1.0), value: calculatedHealthScore)
 
-                        Text("\(Int(healthScore)) / 100")
+                        Text("\(Int(calculatedHealthScore)) / 100")
                             .font(.title)
                             .fontWeight(.bold)
                     }
@@ -74,7 +61,7 @@ struct PetSummaryView: View {
                         .font(.headline)
                         .foregroundColor(.gray)
 
-                    Text(suggestion)
+                    Text(LocalizedStringKey(aiSuggestion))  // Burada AI'den gelen öneriyi gösteriyoruz
                         .font(.body)
                         .padding()
                         .background(Color(.systemGray6))
@@ -83,10 +70,7 @@ struct PetSummaryView: View {
 
                 // ✅ Finish Butonu
                 Button(action: {
-                    // (1) Navigation stack'i sıfırla
                     path.removeLast(path.count)
-                    
-                    // (2) Ana sayfaya yönlendir
                     path.append("Home")
                 }) {
                     Text("Finish")
@@ -102,7 +86,55 @@ struct PetSummaryView: View {
             .padding()
         }
         .background(Color(.systemGroupedBackground))
+        .onAppear {
         
+            // Gemini API'den önerileri alıyoruz
+            let petInfo: [String: Any] = [
+                "type": "Dog",
+                "weight": weight,
+                "activityLevel": activityLevel,
+                "vaccinated": vaccinated,
+                "dietType": feedingType
+            ]
+
+            let geminiClient = GeminiAPIClient()
+            geminiClient.fetchSuggestion(petInfo: petInfo) { result in
+                switch result {
+                case .success(let suggestion):
+                    DispatchQueue.main.async {
+                        // Burada AI önerilerini kullanıyoruz
+                        aiSuggestion = suggestion
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        aiSuggestion = "Error fetching suggestions: \(error.localizedDescription)"
+                    }
+                }
+            }
+            
+            if let predictor = HealthPredictor() {
+                print("Model yüklendi.")
+                if let predictedScore = predictor.predictHealthScore(
+                    type: "Dog",
+                    weight: Double(weight) ?? 5.0,
+                    activityLevel: activityLevel,
+                    vaccinated: vaccinated,
+                    dietType: feedingType
+                ) {
+                    print("Tahmin yapıldı: \(predictedScore)")
+                    calculatedHealthScore = predictedScore
+                } else {
+                    print("Tahmin yapılamadı, varsayılan skor kullanılacak.")
+                    calculatedHealthScore = 50.0
+                }
+            } else {
+                print("Model yüklenemedi, varsayılan skor kullanılacak.")
+                calculatedHealthScore = 50.0
+            }
+
+          
+        }
     }
+    
 }
 

@@ -3,10 +3,62 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "closure #1 in PetSummaryView.body.getter:PetSummary.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "weight">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in PetSummaryView.body.getter:PetSummary.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "weight">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #3 in closure #1 in closure #1 in PetSummaryView.body.getter:PetSummary.swift">
          <PersistentStrings>
             <PersistentString
                value = "path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GeminiAPIClient.buildHealthSuggestionPrompt(petInfo:):GeminiAPIClient.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Double(petInfo[&quot;weight&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "petInfo[&quot;weight&quot;] ">
+            </PersistentString>
+            <PersistentString
+               value = "petInfo[&quot;weight&quot;] as? String ?? &quot;Unknown weight&quot;">
+            </PersistentString>
+            <PersistentString
+               value = "Double(petInfo[&quot;weight&quot;])">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GeminiAPIClient.fetchSuggestion(petInfo:completion:):GeminiAPIClient.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "petinfo">
+            </PersistentString>
+            <PersistentString
+               value = "petInfo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in PetNutritionHabitsView.body.getter:PetNutritionHabits.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "weight">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

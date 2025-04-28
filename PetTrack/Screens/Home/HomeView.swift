@@ -53,7 +53,7 @@ struct HomeView: View {
                                     .foregroundColor(.gray)
                                     .font(.subheadline)
 
-                                Text("Weight: \(pet.weight) kg")
+                                Text("Weight: \(String(format: "%.2f", pet.weight)) kg")
                                     .foregroundColor(.gray)
                                     .font(.subheadline)
                             }
